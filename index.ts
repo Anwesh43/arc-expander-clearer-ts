@@ -2,6 +2,7 @@ const w : number = window.innerWidth
 const h : number = window.innerHeight
 const scGap : number = 0.05
 const rFactor : number = 10
+const foreColor : string = "#0D47A1"
 
 class ScaleUtil {
 
@@ -15,5 +16,36 @@ class ScaleUtil {
 
     static updateValue(scale : number, dir : number) : number {
         return scale + dir * scGap
+    }
+}
+
+class DrawingUtil {
+
+    static drawArcExpandClearer(context : CanvasRenderingContext2D, sc1 : number, sc2 : number, r : number) {
+        const rUpdated : number = r * sc1
+        context.beginPath()
+        var t = 0
+        for (var i = 360 * sc2; i <= 360; i++) {
+            const x : number = rUpdated * Math.cos(i * Math.PI / 180)
+            const y : number = rUpdated * Math.sin(i * Math.PI / 180)
+            if (t == 0) {
+                context.moveTo(x, y)
+            } else {
+                context.lineTo(x, y)
+            }
+            t++
+        }
+        context.fill()
+    }
+
+    static drawAECNode(context : CanvasRenderingContext2D, x : number, y : number, scale : number) {
+        const r : number = Math.min(w, h) / rFactor
+        const sc1 : number = ScaleUtil.divideScale(scale, 0, 2)
+        const sc2 : number = ScaleUtil.divideScale(scale, 1, 2)
+        context.fillStyle = foreColor
+        context.save()
+        context.translate(x, y)
+        DrawingUtil.drawArcExpandClearer(context, sc1, sc2, r)
+        context.restore()
     }
 }
