@@ -114,3 +114,35 @@ class AEC {
         this.state.startUpdating(cb)
     }
 }
+
+class AECContainer {
+
+    aecs : Array<AEC> = []
+
+    draw(context : CanvasRenderingContext2D) {
+        this.aecs.forEach((aec) => {
+            aec.draw(context)
+        })
+    }
+
+    create(x : number, y : number, cb : Function) {
+        const aec : AEC = new AEC(x, y)
+        this.aecs.push(aec)
+        aec.startUpdating(() => {
+            if (this.aecs.length == 1) {
+                cb()
+            }
+        })
+    }
+
+    update(cb : Function) {
+        this.aecs.forEach((aec, index) => {
+            aec.update(() => {
+                this.aecs.splice(index, 1)
+                if (this.aecs.length == 0) {
+                    cb()
+                }
+            })
+        })
+    }
+}
