@@ -204,3 +204,5 @@ class Stage {
         stage.handleTap()
     }
 }
+
+Stage.init()
