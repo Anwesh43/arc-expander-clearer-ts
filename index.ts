@@ -146,3 +146,25 @@ class AECContainer {
         })
     }
 }
+
+class Renderer {
+
+    aecContainer : AECContainer = new AECContainer()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.aecContainer.draw(context)
+    }
+
+    handleTap(x : number, y : number, cb : Function) {
+        this.aecContainer.create(x, y, () => {
+            this.animator.start(() => {
+                cb()
+                this.aecContainer.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
