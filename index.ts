@@ -25,16 +25,11 @@ class DrawingUtil {
     static drawArcExpandClearer(context : CanvasRenderingContext2D, sc1 : number, sc2 : number, r : number) {
         const rUpdated : number = r * sc1
         context.beginPath()
-        var t = 0
+        context.moveTo(0, 0)
         for (var i = 360 * sc2; i <= 360; i++) {
             const x : number = rUpdated * Math.cos(i * Math.PI / 180)
             const y : number = rUpdated * Math.sin(i * Math.PI / 180)
-            if (t == 0) {
-                context.moveTo(x, y)
-            } else {
-                context.lineTo(x, y)
-            }
-            t++
+            context.lineTo(x, y)
         }
         context.fill()
     }
@@ -84,6 +79,7 @@ class Animator {
         if (!this.animated) {
             this.animated = true
             this.interval = setInterval(cb, 50)
+            console.log("animator started")
         }
     }
 
@@ -91,6 +87,7 @@ class Animator {
         if (this.animated) {
             this.animated = false
             clearInterval(this.interval)
+            console.log("animator stopped")
         }
     }
 }
