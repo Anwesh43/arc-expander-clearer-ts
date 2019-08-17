@@ -93,3 +93,24 @@ class Animator {
         }
     }
 }
+
+class AEC {
+
+    state : State = new State()
+
+    constructor(private x : number, private y : number) {
+
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        DrawingUtil.drawAECNode(context, this.x, this.y, this.state.scale)
+    }
+
+    update(cb : Function) {
+        this.state.update(cb)
+    }
+
+    startUpdating(cb : Function) {
+        this.state.startUpdating(cb)
+    }
+}
