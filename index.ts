@@ -3,6 +3,7 @@ const h : number = window.innerHeight
 const scGap : number = 0.05
 const rFactor : number = 10
 const foreColor : string = "#0D47A1"
+const backColor : string = "#BDBDBD"
 
 class ScaleUtil {
 
@@ -166,5 +167,40 @@ class Renderer {
                 })
             })
         })
+    }
+}
+
+class Stage {
+
+    canvas : HTMLCanvasElement = document.createElement('canvas')
+    context : CanvasRenderingContext2D
+    renderer : Renderer = new Renderer()
+
+    initCanvas() {
+        this.canvas.width = w
+        this.canvas.height = h
+        this.context = this.canvas.getContext('2d')
+        document.body.appendChild(this.canvas)
+    }
+
+    render() {
+        this.context.fillStyle = backColor
+        this.context.fillRect(0, 0, w, h)
+        this.renderer.render(this.context)
+    }
+
+    handleTap() {
+        this.canvas.onmousedown = (event) => {
+            this.renderer.handleTap(event.offsetX, event.offsetY, () => {
+                this.render()
+            })
+        }
+    }
+
+    static init() {
+        const stage : Stage = new Stage()
+        stage.initCanvas()
+        stage.render()
+        stage.handleTap()
     }
 }
